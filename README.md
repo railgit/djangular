@@ -3,13 +3,13 @@
            
                                                                                    
                                                                                   
-About:
-     Rail Application is a web application which works like tickets reservation system for railways. This is a micro service architecture based web application where the uses angular as client-side and django as server side and  postgresql as database
+## About:
+Rail Application is a web application which works like tickets reservation system for railways. This is a micro service architecture based web application where the uses angular as client-side and django as server side and  postgresql as database
       
 Step to run server-side(django)
   - 1.Run ds.bat
   - 2.open http://localhost:8000 in browser
-# (For first time)
+## (For first time)
   - 1.Install packages mentioned in requirements.txt
   - 2.change database username and password in settings.py file
   - 3.Then run ds.bat file and break it to do migrations
