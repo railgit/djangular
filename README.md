@@ -1,1 +1,20 @@
-# djangular
+                                                                                      # DJANGULAR
+                                                                                   [![N|Solid] (django+Angular)
+                   
+About:
+      
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                        
+                                                                                      
