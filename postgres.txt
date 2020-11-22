@@ -1,0 +1,59 @@
+CREATE OR REPLACE FUNCTION age()
+  RETURNS TRIGGER AS 
+$$
+ BEGIN
+    NEW."Age" = EXTRACT(YEAR FROM (age(NEW."Date_of_birth")));
+	RETURN NEW;
+END;
+  $$ language 'plpgsql';
+
+CREATE TRIGGER age
+    BEFORE INSERT OR UPDATE OF "Date_of_birth" ON railapp_profile
+    FOR EACH ROW
+    EXECUTE PROCEDURE age();
+
+
+CREATE OR REPLACE FUNCTION seat_inc()
+  RETURNS TRIGGER AS 
+$$
+ BEGIN
+    UPDATE railapp_train SET available_seats=available_seats-NEW."No_of_seats";
+	RETURN NEW;
+END;
+  $$ language 'plpgsql';
+  
+CREATE TRIGGER seats_inc
+    AFTER INSERT ON railapp_booking
+    FOR EACH ROW
+    EXECUTE PROCEDURE seat_inc();
+
+
+CREATE OR REPLACE FUNCTION seat_dec()
+  RETURNS TRIGGER AS 
+$$
+ BEGIN
+    UPDATE railapp_train SET available_seats=available_seats+OLD."No_of_seats";
+	RETURN NEW;
+END;
+  $$ language 'plpgsql';
+  
+CREATE TRIGGER seats_dec
+    AFTER DELETE ON railapp_booking
+    FOR EACH ROW
+    EXECUTE PROCEDURE seat_dec();
+
+CREATE OR REPLACE FUNCTION userins()
+  RETURNS TRIGGER AS 
+$$
+BEGIN
+INSERT INTO railapp_profile("User_Id_id")
+SELECT "User_Id" FROM railapp_user;
+RETURN NEW;
+END;
+
+  $$ language 'plpgsql';
+
+CREATE TRIGGER idins
+    AFTER INSERT ON railapp_user
+    FOR EACH ROW
+    EXECUTE PROCEDURE userins();
