@@ -1,0 +1,77 @@
+CREATE TRIGGER age
+         AFTER INSERT
+            ON railapp_profile
+      FOR EACH ROW
+BEGIN
+    UPDATE railapp_profile
+       SET Age = (strftime('%Y', 'now') - strftime('%Y', NEW.Date_of_birth) ) - (strftime('%m-%d', 'now') < strftime('%m-%d', NEW.Date_of_birth) ) 
+     WHERE Date_of_birth = NEW.Date_of_birth;
+END;
+
+
+CREATE TRIGGER age_update
+         AFTER UPDATE OF Date_of_birth
+            ON railapp_profile
+      FOR EACH ROW
+BEGIN
+    UPDATE railapp_profile
+       SET Age = (strftime('%Y', 'now') - strftime('%Y', NEW.Date_of_birth) ) - (strftime('%m-%d', 'now') < strftime('%m-%d', NEW.Date_of_birth) ) 
+     WHERE Date_of_birth = NEW.Date_of_birth;
+END;
+
+
+CREATE TRIGGER seats
+         AFTER INSERT
+            ON railapp_booking
+      FOR EACH ROW
+BEGIN
+    UPDATE railapp_train
+       SET available_seats = available_seats - (
+                                                   SELECT No_of_seats
+                                                     FROM railapp_booking
+                                                    WHERE No_of_seats = NEW.No_of_seats
+                                               )
+     WHERE Train_Id = (
+                          SELECT Train_Id_id
+                            FROM railapp_booking
+                           WHERE Train_Id_id = NEW.Train_Id_id
+                      );
+END;
+
+
+
+CREATE TRIGGER update_seat
+        BEFORE DELETE
+            ON railapp_booking
+      FOR EACH ROW
+BEGIN
+    UPDATE railapp_train
+       SET available_seats = available_seats + (
+                                                   SELECT No_of_seats
+                                                     FROM railapp_booking
+                                                    WHERE No_of_seats = OLD.No_of_seats
+                                               )
+     WHERE Train_Id = (
+                          SELECT Train_Id_id
+                            FROM railapp_booking
+                           WHERE Train_Id_id = OLD.Train_Id_id
+                      );
+END;
+
+
+CREATE TRIGGER profile
+         AFTER INSERT
+            ON railapp_user
+      FOR EACH ROW
+BEGIN
+    INSERT INTO railapp_profile (
+                                    User_Id_id
+                                )
+                                VALUES (
+                                    (
+                                        SELECT User_Id
+                                          FROM railapp_user
+                                         WHERE User_Id = NEW.User_Id
+                                    )
+                                );
+END;
