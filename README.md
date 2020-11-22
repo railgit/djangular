@@ -14,8 +14,8 @@ Step to run server-side(django)
   - 2.change database username and password in settings.py file
   - 3.Then run ds.bat file and break it to do migrations
   - 4.For migration:
-        - i. python manage.py makemigrations and Enter
-        - ii. python manage.py migrate and Enter
+      - i. python manage.py makemigrations and Enter
+      - ii. python manage.py migrate and Enter
       - Now all the tables are created in postgres
                                                                                     
   - 5.Type python manage.py runserver and Enter
